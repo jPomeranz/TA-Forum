@@ -143,13 +143,13 @@
                                 <div class="form-group">
                                     <label for="email" class="col-sm-2 control-label">Email</label>
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required="true"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="col-sm-2 control-label">Password</label>
                                     <div class="col-sm-10">
-                                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" />
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required="true"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -167,19 +167,19 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-2 control-label">Name</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" />
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Name"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="email" class="col-sm-2 control-label">Email</label>
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
+                                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required="true"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="col-sm-2 control-label">Password</label>
                                     <div class="col-sm-10">
-                                        <input type="password" class="form-control" id="password" placeholder="Password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"/>
+                                        <input type="password" class="form-control" id="password" placeholder="Password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required="true"/>
                                     </div>
                                 </div>
                                 <div class="row">
