@@ -1,25 +1,25 @@
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>The TA Forum</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Provide Feedback</title>
 
-	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="bootstrap.min.css">
-	<link rel="stylesheet" href="custom.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="custom.css">
 
-	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
 </head>
 
 <?php
     //DELETE ME FROM PROD!
-	ini_set('display_errors', 1);
-	ini_set('display_startup_errors', 1);
-	error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 
     if (!isset($_SESSION)) {
         session_start();
@@ -28,94 +28,92 @@
 
 
 <body>
-	<nav class="navbar navbar-inverse">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#">The TA Forum</a>
-		</div>
-		<div class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-				<li class="active"><a href="#">Home</a></li>
-				<li><a href="#about">About</a></li>
-				<li><a href="#contact">Contact</a></li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Action</a></li>
-						<li><a href="#">Another action</a></li>
-						<li><a href="#">Something else here</a></li>
-						<li role="separator" class="divider"></li>
-						<li class="dropdown-header">Nav header</li>
+    <nav class="navbar navbar-inverse">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">The TA Forum</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="index.php">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">Nav header</li>
                         <li><a href="feedback.php">Leave Feedback</a></li>
-						<li><a href="#">One more separated link</a></li>
-					</ul>
-				</li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right" id="loginbox">
-                <?php 
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" id="loginbox">
+                <?php
                     if(!isset($_SESSION["email"])) //Show login button if user not logged in
-    				    echo "<li><a href=\"#\" data-toggle=\"modal\" data-target=\"#myModal\">Login</a></li>";
+                        echo "<li><a href=\"#\" data-toggle=\"modal\" data-target=\"#myModal\">Login</a></li>";
                     else echo "<li><a href=\"#\">" . $_SESSION["email"] . "</a></li>";
                 ?>
-			</ul>
-		</div><!--/.nav-collapse -->
-	</nav>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </nav>
 
-	<div class="container">
-		<?php
-			require "dbutil.php";
-
-            if(isset($_POST["loginSubmitted"]))
+    <div class="container">
+        <?php
+            if(isset($_POST["feedbackSubmitted"]))
             {
-                $email = $_POST["email"];
-                $password = $_POST["password"];
-                if(checkLogin($email, $password)) {
-                    $_SESSION["email"] = $email;
-                    echo "User " . $email . " has successfully logged in.";
-                    //echo "<script>$(\"#myModal\").modal(\"hide\")</script>";
-                }
-            }
-            if(isset($_POST["registerSubmitted"]))
-            {
-                $name = $_POST["name"];
-                $email = $_POST["email"];
-                $password = $_POST["password"];
-                if(registerUser($email, $name, $password)) {
-                    $_SESSION["email"] = $email;
-                    echo "User " . $email . " has successfully registered and logged in.";
-                    //echo "<script>$(\"#myModal\").modal(\"hide\")</script>";
+                $description = $_POST["description"];
+                if(addFeedback($description)) {
+                    echo "Feedback has been successfully submitted.\nAn admin will review your comments soon.";
                 }
                 else
-                    echo "Registration failed. Please try again.";
+                    echo "There was an error submitting your feedback.";
+            }
+        ?>
+    </div>
+
+    <div class="container">
+        <form role="form" class="form-horizontal" id="feedback" action="feedback.php" method="post" accept-charset="UTF-8">
+            <div class="form-group">
+                <h2>Please enter and submit your feedback here:</h2>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="description" name="description" placeholder="Feedback goes here" style="height:100px" required="True"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10">
+                    <input type="submit" class="btn btn-primary btn-sm" name="feedbackSubmitted"></input>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="container">
+        <?php
+            require_once "dbutil.php";
+
+            $db = DbUtil::loginConnection();
+
+            $stmt = $db->stmt_init();
+
+            echo "<h2>Feedback:</h2>";
+            $result = mysqli_query($db, "SELECT description FROM feedback");
+            while($row = mysqli_fetch_array($result)) {
+                echo "<p>- " . $row['description'] . "</p>";
             }
 
-
-
-			$db = DbUtil::loginConnection();
-
-			$stmt = $db->stmt_init();
-
-			echo "<h2>Browse Courses By School:</h2>";
-			$result = mysqli_query($db, "SELECT DISTINCT school FROM dept");
-			while($row = mysqli_fetch_array($result)) {
-				echo "<p><b>" . $row['school'] . ":</b></p><div class='check-margin2'>";
-				$subresult = mysqli_query($db, "SELECT course_dept FROM dept WHERE school=\"" . $row['school'] . "\" ORDER BY school");
-				while($subrow = mysqli_fetch_array($subresult)) {
-					echo $subrow['course_dept'] . "<br>";
-				}
-				echo "</div>";
-			}
-
-			$db->close();
-		?>
-	</div>
+            $db->close();
+        ?>
+    </div>
 </body>
-
 
 <!-- Large modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -198,61 +196,25 @@
     </div>
 </div>
 
-
-
-
 <?php
-    function checkLogin($email, $password)
+    function addFeedback($description)
     {
-        $db = DbUtil::loginConnection(false);
+        require_once "dbutil.php";
+
+        $db = DbUtil::loginConnection();
 
         $stmt = $db->stmt_init();
 
-        if($stmt->prepare("SELECT password_hash FROM user WHERE email LIKE ?") or die(mysqli_error($db))) {
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-            $stmt->bind_result($stored_pass_hash);
-            $stmt->store_result();
-
-            if($stmt->num_rows != 1) {
-                echo "Login error. Incorrect email or password.";
-                $stmt->close();
-                $db->close();
-                return false;
-            }
-            else {
-                $stmt->fetch();
-                if(!password_verify($password, $stored_pass_hash))
-                {
-                    echo "Login error. Incorrect email or password.";
-                    $stmt->close();
-                    $db->close();
-                    return false;
-                }
-            }
-            $stmt->close();
-        }
-        $db->close();
-        return true;
-    }
-
-    function registerUser($email, $name, $password)
-    {
-        $db = DbUtil::loginConnection(false);
-
-        $stmt = $db->stmt_init();
-
-        if($stmt->prepare("INSERT INTO user VALUES(?,?,?)") or die(mysqli_error($db))) {
-            $password_hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt->bind_param("sss", $email, $name, $password_hash);
+        if($stmt->prepare("INSERT INTO feedback (description) VALUES(?)") or die(mysqli_error($db))) {
+            $stmt->bind_param("s", $description);
             $stmt->execute();
             $stmt->close();
-        }
-        else {
+        } else {
             $stmt->close();
             $db->close();
             return false;
         }
+
         $db->close();
         return true;
     }

@@ -21,6 +21,6 @@ class DbUtil{
 		
 		return $db;
 	}
-	
+
 }
 ?>
