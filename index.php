@@ -9,8 +9,8 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="bootstrap.min.css">
-	<link rel="stylesheet" href="custom.css">
+	<link rel="stylesheet" href="assets/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/custom.css">
 
 	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
 </head>
@@ -56,11 +56,11 @@
 					</ul>
 				</li>
 			</ul>
-			<ul class="nav navbar-nav navbar-right" id="loginbox">
+			<ul class="nav navbar-nav navbar-right">
                 <?php 
                     if(!isset($_SESSION["email"])) //Show login button if user not logged in
     				    echo "<li><a href=\"#\" data-toggle=\"modal\" data-target=\"#myModal\">Login</a></li>";
-                    else echo "<li><a href=\"#\">" . $_SESSION["email"] . "</a></li>";
+                    else echo "<li><a href=\"#\">" . $_SESSION["email"] . "</a></li><li><a href=\"logout.php\">Logout</a></li>"; //Else print email of user and logout button
                 ?>
 			</ul>
 		</div><!--/.nav-collapse -->
@@ -69,6 +69,7 @@
 	<div class="container">
 		<?php
 			require "dbutil.php";
+            require "userFuncs.php";
 
             if(isset($_POST["loginSubmitted"]))
             {
@@ -77,8 +78,10 @@
                 if(checkLogin($email, $password)) {
                     $_SESSION["email"] = $email;
                     echo "User " . $email . " has successfully logged in.";
-                    //echo "<script>$(\"#myModal\").modal(\"hide\")</script>";
+                    header("Refresh:0");
                 }
+                else
+                    echo "Login error. Incorrect email or password.";
             }
             if(isset($_POST["registerSubmitted"]))
             {
@@ -88,15 +91,14 @@
                 if(registerUser($email, $name, $password)) {
                     $_SESSION["email"] = $email;
                     echo "User " . $email . " has successfully registered and logged in.";
-                    //echo "<script>$(\"#myModal\").modal(\"hide\")</script>";
+                    header("Refresh:0");
                 }
                 else
                     echo "Registration failed. Please try again.";
             }
 
 
-
-			$db = DbUtil::loginConnection();
+			$db = DbUtil::loginConnection(true);
 
 			$stmt = $db->stmt_init();
 
@@ -197,63 +199,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-<?php
-    function checkLogin($email, $password)
-    {
-        $db = DbUtil::loginConnection(false);
-
-        $stmt = $db->stmt_init();
-
-        if($stmt->prepare("SELECT password_hash FROM user WHERE email LIKE ?") or die(mysqli_error($db))) {
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-            $stmt->bind_result($stored_pass_hash);
-            $stmt->store_result();
-
-            if($stmt->num_rows != 1) {
-                echo "Login error. Incorrect email or password.";
-                $stmt->close();
-                $db->close();
-                return false;
-            }
-            else {
-                $stmt->fetch();
-                if(!password_verify($password, $stored_pass_hash))
-                {
-                    echo "Login error. Incorrect email or password.";
-                    $stmt->close();
-                    $db->close();
-                    return false;
-                }
-            }
-            $stmt->close();
-        }
-        $db->close();
-        return true;
-    }
-
-    function registerUser($email, $name, $password)
-    {
-        $db = DbUtil::loginConnection(false);
-
-        $stmt = $db->stmt_init();
-
-        if($stmt->prepare("INSERT INTO user VALUES(?,?,?)") or die(mysqli_error($db))) {
-            $password_hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt->bind_param("sss", $email, $name, $password_hash);
-            $stmt->execute();
-            $stmt->close();
-        }
-        else {
-            $stmt->close();
-            $db->close();
-            return false;
-        }
-        $db->close();
-        return true;
-    }
-?>
