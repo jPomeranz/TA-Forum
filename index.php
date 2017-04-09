@@ -94,7 +94,7 @@
                     header("Refresh:0");
                 }
                 else
-                    echo "Registration failed. Please try again.";
+                    echo "Registration failed. Email in use. Please try again."; //Insert will fail if email not unique
             }
 
 
