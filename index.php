@@ -11,8 +11,18 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="assets/bootstrap.min.css">
 	<link rel="stylesheet" href="assets/custom.css">
-
 	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <script>
+        $(document).ready(function(){    
+            $(".nav a").on("click", function(){
+                $(".nav").find(".active").removeClass("active");
+                $(this).parent().addClass("active");
+            });
+        });
+        function toggleInvis(divId) {
+            $("#" + divId).removeClass('hidden').siblings().addClass('hidden');
+        }
+    </script>
 </head>
 
 <?php
@@ -40,9 +50,9 @@
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="#">Home</a></li>
-				<li><a href="#about">About</a></li>
-				<li><a href="#contact">Contact</a></li>
+				<li class="active"><a href="#" onclick="toggleInvis('browse');">Browse</a></li>
+				<li><a href="#" onclick="toggleInvis('feedback');">Feedback</a></li>
+				<li><a href="#">Search</a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
 					<ul class="dropdown-menu">
@@ -67,55 +77,99 @@
 	</nav>
 
 	<div class="container">
-		<?php
-			require "dbutil.php";
-            require "userFuncs.php";
+        <div id="browse">
+    		<?php
+    			require "dbutil.php";
+                require "userFuncs.php";
 
-            if(isset($_POST["loginSubmitted"]))
-            {
-                $email = $_POST["email"];
-                $password = $_POST["password"];
-                if(checkLogin($email, $password)) {
-                    $_SESSION["email"] = $email;
-                    echo "User " . $email . " has successfully logged in.";
-                    header("Refresh:0");
+                if(isset($_POST["loginSubmitted"]))
+                {
+                    $email = $_POST["email"];
+                    $password = $_POST["password"];
+                    if(checkLogin($email, $password)) {
+                        $_SESSION["email"] = $email;
+                        echo "User " . $email . " has successfully logged in.";
+                        header("Refresh:0");
+                    }
+                    else
+                        echo "Login error. Incorrect email or password.";
                 }
-                else
-                    echo "Login error. Incorrect email or password.";
-            }
-            if(isset($_POST["registerSubmitted"]))
-            {
-                $name = $_POST["name"];
-                $email = $_POST["email"];
-                $password = $_POST["password"];
-                if(registerUser($email, $name, $password)) {
-                    $_SESSION["email"] = $email;
-                    echo "User " . $email . " has successfully registered and logged in.";
-                    header("Refresh:0");
+                if(isset($_POST["registerSubmitted"]))
+                {
+                    $name = $_POST["name"];
+                    $email = $_POST["email"];
+                    $password = $_POST["password"];
+                    if(registerUser($email, $name, $password)) {
+                        $_SESSION["email"] = $email;
+                        echo "User " . $email . " has successfully registered and logged in.";
+                        header("Refresh:0");
+                    }
+                    else
+                        echo "Registration failed. Email in use. Please try again."; //Insert will fail if email not unique
                 }
-                else
-                    echo "Registration failed. Email in use. Please try again."; //Insert will fail if email not unique
-            }
 
 
-			$db = DbUtil::loginConnection(true);
+    			$db = DbUtil::loginConnection(true);
 
-			$stmt = $db->stmt_init();
+    			$stmt = $db->stmt_init();
 
-			echo "<h2>Browse Courses By School:</h2>";
-			$result = mysqli_query($db, "SELECT DISTINCT school FROM dept");
-			while($row = mysqli_fetch_array($result)) {
-				echo "<p><b>" . $row['school'] . ":</b></p><div class='check-margin2'>";
-				$subresult = mysqli_query($db, "SELECT course_dept FROM dept WHERE school=\"" . $row['school'] . "\" ORDER BY school");
-				while($subrow = mysqli_fetch_array($subresult)) {
-					echo $subrow['course_dept'] . "<br>";
-				}
-				echo "</div>";
-			}
+    			echo "<h2>Browse Courses By School:</h2>";
+    			$result = mysqli_query($db, "SELECT DISTINCT school FROM dept");
+    			while($row = mysqli_fetch_array($result)) {
+    				echo "<p><b>" . $row['school'] . ":</b></p><div class='check-margin2'>";
+    				$subresult = mysqli_query($db, "SELECT course_dept FROM dept WHERE school=\"" . $row['school'] . "\" ORDER BY school");
+    				while($subrow = mysqli_fetch_array($subresult)) {
+    					echo $subrow['course_dept'] . "<br>";
+    				}
+    				echo "</div>";
+    			}
 
-			$db->close();
-		?>
-	</div>
+    			$db->close();
+    		?>
+        </div>
+
+        <div id="feedback" class="hidden">
+            <?php
+                if(isset($_POST["feedbackSubmitted"]))
+                {
+                    $description = $_POST["description"];
+                    if(addFeedback($description)) {
+                        echo "Feedback has been successfully submitted.\nAn admin will review your comments soon.";
+                    }
+                    else
+                        echo "There was an error submitting your feedback.";
+                }
+            ?>
+            <form role="form" class="form-horizontal" id="feedback" action="feedback.php" method="post" accept-charset="UTF-8">
+                <div class="form-group">
+                    <h2>Please enter and submit your feedback here:</h2>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="description" name="description" placeholder="Feedback goes here" required="True" rows="5"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-10">
+                        <input type="submit" class="btn btn-primary btn-sm" name="feedbackSubmitted"></input>
+                    </div>
+                </div>
+            </form>
+            <?php
+                require_once "dbutil.php";
+
+                $db = DbUtil::loginConnection(true);
+
+                $stmt = $db->stmt_init();
+
+                echo "<h2>Feedback:</h2>";
+                $result = mysqli_query($db, "SELECT description FROM feedback");
+                while($row = mysqli_fetch_array($result)) {
+                    echo "<p>- " . $row['description'] . "</p>";
+                }
+
+                $db->close();
+            ?>
+        </div>
+    </div>
 </body>
 
 
@@ -199,3 +253,27 @@
         </div>
     </div>
 </div>
+
+<?php
+    function addFeedback($description)
+    {
+        require_once "dbutil.php";
+
+        $db = DbUtil::loginConnection();
+
+        $stmt = $db->stmt_init();
+
+        if($stmt->prepare("INSERT INTO feedback (description) VALUES(?)") or die(mysqli_error($db))) {
+            $stmt->bind_param("s", $description);
+            $stmt->execute();
+            $stmt->close();
+        } else {
+            $stmt->close();
+            $db->close();
+            return false;
+        }
+
+        $db->close();
+        return true;
+    }
+?>
