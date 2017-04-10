@@ -52,7 +52,7 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="#" onclick="toggleInvis('browse');">Browse</a></li>
 				<li><a href="#" onclick="toggleInvis('feedback');">Feedback</a></li>
-				<li><a href="#">Search</a></li>
+				<li><a href="#" onclick="toggleInvis('search');">Search</a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
 					<ul class="dropdown-menu">
@@ -140,7 +140,7 @@
                         echo "There was an error submitting your feedback.";
                 }
             ?>
-            <form role="form" class="form-horizontal" id="feedback" action="feedback.php" method="post" accept-charset="UTF-8">
+            <form role="form" class="form-horizontal" id="feedback" action="index.php" method="post" accept-charset="UTF-8">
                 <div class="form-group">
                     <h2>Please enter and submit your feedback here:</h2>
                     <div class="col-sm-10">
@@ -168,6 +168,8 @@
 
                 $db->close();
             ?>
+        </div>
+        <div id="search" class="hidden">
         </div>
     </div>
 </body>
