@@ -14,7 +14,7 @@
 	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
     <script>
         $(document).ready(function(){    
-            $(".nav a").on("click", function(){
+            $(".nabbar-nav .nav a").on("click", function(){
                 $(".nav").find(".active").removeClass("active");
                 $(this).parent().addClass("active");
             });
@@ -239,8 +239,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-2">
-                                    </div>
+                                    <div class="col-sm-2"></div>
                                     <div class="col-sm-10">
                                         <input type="submit" class="btn btn-primary btn-sm" name="registerSubmitted"></input>
                                         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" aria-hidden="true">Cancel</button>
