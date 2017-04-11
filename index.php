@@ -14,7 +14,7 @@
 	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
     <script>
         $(document).ready(function(){    
-            $(".nabbar-nav .nav a").on("click", function(){
+            $(".navbar-nav a").on("click", function(){
                 $(".nav").find(".active").removeClass("active");
                 $(this).parent().addClass("active");
             });
@@ -130,8 +130,7 @@
 
         <div id="feedback" class="hidden">
             <?php
-                if(isset($_POST["feedbackSubmitted"]))
-                {
+                if(isset($_POST["feedbackSubmitted"])) {
                     $description = $_POST["description"];
                     if(addFeedback($description)) {
                         echo "Feedback has been successfully submitted.\nAn admin will review your comments soon.";
@@ -140,7 +139,7 @@
                         echo "There was an error submitting your feedback.";
                 }
             ?>
-            <form role="form" class="form-horizontal" id="feedback" action="index.php" method="post" accept-charset="UTF-8">
+            <form role="form" class="form-horizontal" id="feedbackForm" action="index.php" method="post" accept-charset="UTF-8">
                 <div class="form-group">
                     <h2>Please enter and submit your feedback here:</h2>
                     <div class="col-sm-10">
@@ -170,7 +169,7 @@
             ?>
         </div>
         <div id="search" class="hidden">
-            <form role="form" class="form-horizontal" id="search" action="index.php" method="post" accept-charset="UTF-8">                
+            <form role="form" class="form-horizontal" id="searchForm" action="index.php" method="post" accept-charset="UTF-8">                
                 <div class="form-group">
                     <h2>Please enter all information about the TA you're searching for:</h2>
                     <label for="name" class="col-sm-2 control-label">TA Name</label>
