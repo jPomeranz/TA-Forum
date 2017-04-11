@@ -32,3 +32,48 @@
         </div>
     </div>
 </form>
+<?php
+    if(isset($_POST["searchSubmitted"])) {
+        $name = $_POST["name"];
+        $title = $_POST["title"];
+        $dept = $_POST["dept"];
+        $mnemonic = $_POST["mnemonic"];
+        if(!search($name, $title, $dept, $mnemonic))
+            echo "There was an error performing your search. Please try again later.";
+    }
+?>
+<?php
+    function search($name, $title, $dept, $mnemonic) {
+        require_once "dbutil.php";
+
+        $db = DbUtil::loginConnection(true);
+
+        $stmt = $db->stmt_init();
+
+        $date = date("Y");
+        $name = "%" . $name . "%";
+        $title = "%" . $title . "%";
+        $dept = "%" . $dept . "%";
+        $mnemonic = "%" . $mnemonic . "%";
+
+        if($stmt->prepare("SELECT name, title, section_number, semester FROM ta NATURAL JOIN teaches NATURAL JOIN section NATURAL JOIN section_of NATURAL JOIN course where year=$date AND name LIKE ? AND title LIKE ? AND course_dept LIKE ? AND course_mnemonic_number LIKE ?") or die(mysqli_error($db))) {
+            $stmt->bind_param("ssss", $name, $title, $dept, $mnemonic);
+            $stmt->execute();
+            $stmt->bind_result($name, $title, $section_number, $semester);
+
+            echo "<h3>Search Results:</h3>";
+            echo "<div class=\"table-responsive\"><table class=\"table\"><th>Name</th><th>Course Title</th><th>Section Number</th><th>Semester</th><br>";
+            while($stmt->fetch()) {
+                echo "<tr><td>$name</td><td>$title</td><td>$section_number</td><td>$semester</td></tr>";
+            }
+            echo "</table></div>";
+            $stmt->close();
+        } else {
+            $stmt->close();
+            $db->close();
+            return false;
+        }
+        $db->close();
+        return true;
+    }
+?>

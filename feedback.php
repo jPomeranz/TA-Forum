@@ -37,11 +37,10 @@
     $db->close();
 ?>
 <?php
-    function addFeedback($description)
-    {
+    function addFeedback($description) {
         require_once "dbutil.php";
 
-        $db = DbUtil::loginConnection();
+        $db = DbUtil::loginConnection(true);
 
         $stmt = $db->stmt_init();
 
