@@ -1,6 +1,7 @@
 <?php
     function checkLogin($email, $password)
     {
+        require_once "includes/dbutil.php";
         $db = DbUtil::loginConnection(false);
 
         $stmt = $db->stmt_init();
@@ -33,6 +34,7 @@
 
     function registerUser($email, $name, $password)
     {
+        require_once "includes/dbutil.php";
         $db = DbUtil::loginConnection(false);
 
         $stmt = $db->stmt_init();
@@ -50,5 +52,31 @@
         }
         $db->close();
         return true;
+    }
+
+    if(isset($_POST["loginSubmitted"]))
+    {
+        $email = $_POST["email"];
+        $password = $_POST["password"];
+        if(checkLogin($email, $password)) {
+            $_SESSION["email"] = $email;
+            header("Refresh:0");
+            echo "User " . $email . " has successfully logged in.";
+        }
+        else
+            echo "Login error. Incorrect email or password.";
+    }
+    if(isset($_POST["registerSubmitted"]))
+    {
+        $name = $_POST["name"];
+        $email = $_POST["email"];
+        $password = $_POST["password"];
+        if(registerUser($email, $name, $password)) {
+            $_SESSION["email"] = $email;
+            header("Refresh:0");
+            echo "User " . $email . " has successfully registered and logged in.";
+        }
+        else
+            echo "Registration failed. Email in use. Please try again."; //Insert will fail if email not unique
     }
 ?>
