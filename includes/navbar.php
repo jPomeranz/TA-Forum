@@ -13,6 +13,7 @@
 			<li class="<?php if($currentPage =='index'){echo 'active';}?>"><a href="index.php">Browse</a></li>
 			<li class="<?php if($currentPage =='feedback'){echo 'active';}?>"><a href="feedback.php">Feedback</a></li>
 			<li class="<?php if($currentPage =='search'){echo 'active';}?>"><a href="search.php">Search</a></li>
+			<li class="<?php if($currentPage =='export'){echo 'active';}?>"><a href="export.php">Export</a></li>
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
 				<ul class="dropdown-menu">
