@@ -41,4 +41,45 @@
             return false;
         }
     }
+
+    function addTA($name,$grad_year) {
+        require_once "includes/dbutil.php";
+
+        $db = DbUtil::loginConnection(true);
+
+        $stmt = $db->stmt_init();
+
+        if($stmt->prepare("INSERT INTO ta (name, graduation_year) VALUES(?,?)") or die(mysqli_error($db))) {
+            $stmt->bind_param("ss", $name, $grad_year);
+            $stmt->execute();
+            $stmt->close();
+            $new_id = $db->insert_id;
+        } else {
+            $stmt->close();
+            $new_id = 0;
+        }
+
+        $db->close();
+        return $new_id;
+    }
+
+    function addTeaches($ta_id,$section_id) {
+        require_once "includes/dbutil.php";
+
+        $db = DbUtil::loginConnection(true);
+
+        $stmt = $db->stmt_init();
+
+        if($stmt->prepare("INSERT INTO teaches (ta_id, section_id) VALUES(?,?)") or die(mysqli_error($db))) {
+            $stmt->bind_param("ss", $ta_id, $section_id);
+            $stmt->execute();
+            $stmt->close();
+            $db->close();
+            return true;
+        } else {
+            $stmt->close();
+            $db->close();
+            return false;
+        }
+    }
 ?>
