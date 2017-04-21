@@ -12,7 +12,6 @@
 
     <div class="container">
         <?php
-            require_once "includes/dbutil.php";
             require_once "includes/userFuncs.php";
             require_once "includes/db_funcs.php";
 

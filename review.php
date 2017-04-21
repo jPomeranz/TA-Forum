@@ -8,7 +8,6 @@
     <?php
         $currentPage = "review";
         include "includes/navbar.php";
-        require_once "includes/dbutil.php";
         require_once "includes/userFuncs.php";
 
         if(isset($_SESSION["email"])){
