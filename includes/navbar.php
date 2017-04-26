@@ -11,9 +11,9 @@
 	<div class="navbar-collapse collapse">
 		<ul class="nav navbar-nav">
 			<li class="<?php if($currentPage =='index'){echo 'active';}?>"><a href="<?php echo $_SERVER['CONTEXT_PREFIX'] ?>">Browse</a></li>
-			<li class="<?php if($currentPage =='feedback'){echo 'active';}?>"><a href="<?php echo $_SERVER['CONTEXT_PREFIX'] ?>/feedback.php">Feedback</a></li>
+			<li class="<?php if($currentPage =='feedback'){echo 'active';}?>"><a href="<?php echo $_SERVER['CONTEXT_PREFIX'] ?>/feedback.php">Site Feedback</a></li>
 			<li class="<?php if($currentPage =='search'){echo 'active';}?>"><a href="<?php echo $_SERVER['CONTEXT_PREFIX'] ?>/search.php">Search</a></li>
-			<li class="<?php if($currentPage =='export'){echo 'active';}?>"><a href="<?php echo $_SERVER['CONTEXT_PREFIX'] ?>/export.php">Export</a></li>
+			<li><a href="<?php echo $_SERVER['CONTEXT_PREFIX'] ?>/export.php">Export</a></li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
             <?php

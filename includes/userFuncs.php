@@ -120,7 +120,7 @@
                                     </div>
                                     <div class="col-sm-10">
                                         <input type="submit" class="btn btn-primary btn-sm" name="loginSubmitted"></input>
-                                        <a href="javascript:;">Forgot your password?</a>
+                                        <!--<a href="javascript:;">Forgot your password?</a>-->
                                     </div>
                                 </div>
                                 </form>
