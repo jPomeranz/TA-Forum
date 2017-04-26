@@ -83,7 +83,7 @@
             echo "<h3>Search Results:</h3>";
             echo "<div class=\"table-responsive\"><table class=\"table\"><th>Name</th><th>Course Title</th><th>Course Department</th><th>Course Number</th><th>Section Number</th><th>Semester</th><br>";
             while($stmt->fetch()) {
-                echo "<tr><td>$name</td><td>$title</td><td>$course_dept</td><td>$course_mnemonic_number</td><td>$section_number</td><td>$semester</td></tr>";
+                echo "<tr><td>$name</td><td><a href=\"" . $_SERVER['CONTEXT_PREFIX'] . "/$course_dept/$course_mnemonic_number\">$title</a></td><td>$course_dept</td><td>$course_mnemonic_number</td><td>$section_number</td><td>$semester</td></tr>";
             }
             echo "</table></div>";
             $stmt->close();
