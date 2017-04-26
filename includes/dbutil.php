@@ -1,12 +1,12 @@
 <?php
 class DbUtil{
-	public static $loginUser = "***REMOVED***"; 
+	public static $loginUser = "***REMOVED***";
 	public static $loginPass = "***REMOVED***$";
-	public static $loginUser_insecure = "***REMOVED***"; 
+	public static $loginUser_insecure = "***REMOVED***";
 	public static $loginPass_insecure = "***REMOVED***";
 	public static $host = "***REMOVED***"; // DB Host
 	public static $schema = "***REMOVED***"; // DB Schema
-	
+
 	public static function loginConnection($secure = true){
 		$db = null;
 		if($secure == true)
@@ -18,9 +18,8 @@ class DbUtil{
 			$db->close();
 			exit();
 		}
-		
+
 		return $db;
 	}
-
 }
 ?>

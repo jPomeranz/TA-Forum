@@ -100,7 +100,7 @@
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div class="tab-pane active" id="Login">
-                                <form role="form" class="form-horizontal" id="login" action="index.php" method="post" accept-charset="UTF-8">
+                                <form role="form" class="form-horizontal" id="login" action="<?php echo $_SERVER['CONTEXT_PREFIX'] ?>/index.php" method="post" accept-charset="UTF-8">
                                 <div class="form-group">
                                     <label for="email" class="col-sm-2 control-label">Email</label>
                                     <div class="col-sm-10">

@@ -1,85 +1,74 @@
 <?php
-    function addReview($description) {
-        require_once "includes/dbutil.php";
+    require_once "dbutil.php";
+    $db = DbUtil::loginConnection(true);
+    session_start();
 
-        $db = DbUtil::loginConnection(true);
-
-        $stmt = $db->stmt_init();
-
-        $email = $_SESSION["email"];
-
-        if($stmt->prepare("INSERT INTO review (description, email) VALUES(?,?)") or die(mysqli_error($db))) {
-            $stmt->bind_param("ss", $description, $email);
-            $stmt->execute();
-            $stmt->close();
-            $new_id = $db->insert_id;
-        } else {
-            $stmt->close();
-            $new_id = 0;
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        if ($_GET['func'] == 'getCourseSections') {
+            getCourseSections($_GET['course_dept'], $_GET['course_mnemonic_number']);
+        } else if ($_GET['func'] == 'addReview') {
+            addReview($_GET['ta_id'], $_GET['section_id'], $_GET['description']);
         }
-
-        $db->close();
-        return $new_id;
-    }
-
-    function addReviewAbout($review_id,$ta_id,$section_id) {
-        require_once "includes/dbutil.php";
-
-        $db = DbUtil::loginConnection(true);
-
-        $stmt = $db->stmt_init();
-
-        if($stmt->prepare("INSERT INTO review_about (review_id, ta_id, section_id) VALUES(?,?,?)") or die(mysqli_error($db))) {
-            $stmt->bind_param("sss", $review_id, $ta_id, $section_id);
-            $stmt->execute();
-            $stmt->close();
-            $db->close();
-            return true;
-        } else {
-            $stmt->close();
-            $db->close();
-            return false;
+    } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_POST['func'] == 'addTA') {
+            addTA($_POST['ta_id'], $_POST['name'], $_POST['graduation_year'], $_POST['section_id']);
+        } else if ($_POST['func'] == 'addReview') {
+            addReview($_POST['ta_id'], $_POST['section_id'], $_POST['description']);
         }
     }
 
-    function addTA($name,$grad_year) {
-        require_once "includes/dbutil.php";
+    function getCourseSections($course_dept, $course_mnemonic_number) {
+        global $db;
 
-        $db = DbUtil::loginConnection(true);
+        $stmt = $db->prepare("SELECT section.year, section.semester, section.section_number, section.section_id FROM course INNER JOIN section_of ON course.course_id = section_of.course_id INNER JOIN section ON section_of.section_id = section.section_id WHERE course.course_dept = ? AND course.course_mnemonic_number = ?");
+        $stmt->bind_param("si", $course_dept, $course_mnemonic_number);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($year, $semester, $section_number, $section_id);
 
-        $stmt = $db->stmt_init();
+        $sections = array();
+        while ($stmt->fetch())
+            $sections[$year][$semester][$section_number] = $section_id;
 
-        if($stmt->prepare("INSERT INTO ta (name, graduation_year) VALUES(?,?)") or die(mysqli_error($db))) {
-            $stmt->bind_param("ss", $name, $grad_year);
-            $stmt->execute();
-            $stmt->close();
-            $new_id = $db->insert_id;
-        } else {
-            $stmt->close();
-            $new_id = 0;
-        }
-
-        $db->close();
-        return $new_id;
+        header('Content-Type: application/json');
+        echo json_encode($sections);
     }
 
-    function addTeaches($ta_id,$section_id) {
-        require_once "includes/dbutil.php";
+    function addTA($ta_id, $name, $graduation_year, $section_id) {
+        global $db;
 
-        $db = DbUtil::loginConnection(true);
+        $stmt = $db->prepare("INSERT INTO ta (ta_id, name, graduation_year) VALUES (?, ?, ?)");
+        $stmt->bind_param("ssi", $ta_id, $name, $graduation_year);
+        $stmt->execute();
+        $stmt->close();
 
-        $stmt = $db->stmt_init();
+        addTAToSection($ta_id, $section_id);
+    }
 
-        if($stmt->prepare("INSERT INTO teaches (ta_id, section_id) VALUES(?,?)") or die(mysqli_error($db))) {
-            $stmt->bind_param("ss", $ta_id, $section_id);
-            $stmt->execute();
-            $stmt->close();
-            $db->close();
-            return true;
-        } else {
-            $stmt->close();
-            $db->close();
-            return false;
-        }
+    function addReview($ta_id, $section_id, $description) {
+        global $db;
+
+        addTAToSection($ta_id, $section_id);
+
+        $stmt = $db->prepare("INSERT INTO review (description, email) VALUES (?, ?)");
+        $stmt->bind_param("ss", $description, $_SESSION["email"]);
+        $stmt->execute();
+        $stmt->close();
+
+        $review_id = $db->insert_id;
+
+        $stmt = $db->prepare("INSERT INTO review_about (review_id, ta_id, section_id) VALUES (?, ?, ?)");
+        $stmt->bind_param("isi", $review_id, $ta_id, $section_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    function addTAToSection($ta_id, $section_id) {
+        global $db;
+
+        $stmt = $db->prepare("INSERT INTO teaches (ta_id, section_id) VALUES (?, ?)");
+        $stmt->bind_param("si", $ta_id, $section_id);
+        $stmt->execute();
+        $stmt->close();
     }
 ?>

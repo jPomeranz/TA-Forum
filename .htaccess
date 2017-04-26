@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteRule     ^([A-Z]{2,4})/?$            "%{CONTEXT_PREFIX}/index.php?course_dept=$1"   [NC,L]
+RewriteRule     ^([A-Z]{2,4})/(\d{4})/?$    "%{CONTEXT_PREFIX}/index.php?course_dept=$1&course_mnemonic_number=$2" [NC,L]
+RewriteRule     ^([A-Z]{2,4})/(\d{4})/([a-z]{2,3}(?:\d[a-z]{1,2})?)/?$    "%{CONTEXT_PREFIX}/index.php?course_dept=$1&course_mnemonic_number=$2&ta_id=$3" [NC,L]
