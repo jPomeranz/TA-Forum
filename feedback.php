@@ -26,13 +26,13 @@
         ?>
         <form role="form" class="form-horizontal" id="feedbackForm" action="feedback.php" method="post" accept-charset="UTF-8">
             <div class="form-group">
-                <h2>Please enter and submit your feedback here:</h2>
-                <div class="col-sm-10">
+                <div class="col-sm-12">
+                    <h2>Please enter and submit your feedback here:</h2>
                     <textarea class="form-control" id="description" name="description" placeholder="Feedback goes here" required="True" rows="5"></textarea>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-10">
+                <div class="col-sm-12">
                     <input type="submit" class="btn btn-primary btn-sm" name="feedbackSubmitted"></input>
                 </div>
             </div>
