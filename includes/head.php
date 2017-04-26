@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="<?php echo $_SERVER['CONTEXT_PREFIX'] ?>/assets/bootstrap.min.css">
 <link rel="stylesheet" href="<?php echo $_SERVER['CONTEXT_PREFIX'] ?>/assets/custom.css">
 <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="<?php echo $_SERVER['CONTEXT_PREFIX'] ?>/assets/favicon.ico">
 
 <?php
     //DELETE ME FROM PROD!
