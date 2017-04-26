@@ -125,7 +125,12 @@
 
                 $num_rows = $stmt->num_rows;
 
-                echo "<h2>$course_dept $course_mnemonic_number TAs: <button class=\"btn btn-primary\" type=\"button\" data-toggle=\"modal\" data-target=\"#addModal\">Add TA</button></h2><hr />";
+                echo "<h2>$course_dept $course_mnemonic_number TAs: ";
+                if (isset($_SESSION['email'])) {
+                    echo '<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addModal">Add TA</button>';
+                }
+                echo '</h2><hr />';
+
                 if ($num_rows > 0) {
                     echo "<div class=\"container-fluid\">";
                     echo "<div class=\"row text-left\">";
@@ -148,28 +153,34 @@
             function showTAReviews($course_dept, $course_mnemonic_number, $ta_id) {
                 global $db;
 
-                $stmt = $db->prepare("SELECT ta.name, review.description, review.timestamp, section.section_number, section.semester, section.year FROM review INNER JOIN review_about ON review.review_id = review_about.review_id INNER JOIN ta ON review_about.ta_id = ta.ta_id INNER JOIN section ON review_about.section_id = section.section_id INNER JOIN section_of ON section.section_id = section_of.section_id INNER JOIN course ON section_of.course_id = course.course_id WHERE course.course_dept = ? AND course.course_mnemonic_number = ? AND ta.ta_id = ? ORDER BY section.year ASC, section.semester ASC");
+                $stmt = $db->prepare("SELECT ta.name, review.review_id, review.description, review.timestamp, review.email, section.semester, section.year FROM review INNER JOIN review_about ON review.review_id = review_about.review_id INNER JOIN ta ON review_about.ta_id = ta.ta_id INNER JOIN section ON review_about.section_id = section.section_id INNER JOIN section_of ON section.section_id = section_of.section_id INNER JOIN course ON section_of.course_id = course.course_id WHERE course.course_dept = ? AND course.course_mnemonic_number = ? AND ta.ta_id = ? ORDER BY section.year ASC, section.semester ASC");
                 $stmt->bind_param("sis", $course_dept, $course_mnemonic_number, $ta_id);
                 $stmt->execute();
                 $stmt->store_result();
-                $stmt->bind_result($name, $description, $timestamp, $section_number, $semester, $year);
+                $stmt->bind_result($name, $review_id, $description, $timestamp, $review_email, $semester, $year);
 
                 $num_rows = $stmt->num_rows;
 
                 $reviews = array();
                 while ($stmt->fetch()) {
-                    $reviews[$year][$semester][] = array("description" => $description,
-                                                      "timestamp" => $timestamp);
+                    $reviews[$year][$semester][] = array("id" => $review_id,
+                                                         "description" => $description,
+                                                         "timestamp" => $timestamp,
+                                                         "review_email" => $review_email);
                 }
 
-                echo "<h2>{$ta_id}'s Reviews: <button class=\"btn btn-primary\" type=\"button\" data-toggle=\"modal\" data-target=\"#addModal\">Add Review</button></h2><hr />";
+                echo "<h2>{$ta_id}'s Reviews: ";
+                if (isset($_SESSION['email'])) {
+                    echo '<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addModal">Add Review</button>';
+                }
+                echo '</h2><hr />';
                 if ($num_rows > 0) {
                     echo '<div class="panel-group">';
                     foreach ($reviews as $year => $semesters) {
                         foreach (array_keys($semesters) as $semester) {
                             ?>
                             <div class="panel panel-default">
-                                <div class="panel-heading" data-toggle="collapse" data-target="#<?=$year?><?=$semester?>">
+                                <div class="panel-heading" data-toggle="collapse" data-target="#<?=$year?><?=$semester?>" style="cursor: pointer;">
                                     <h3 class="panel-title"><?=$year?> <?=$semester?></h3>
                                 </div>
                                 <div class="panel-collapse collapse" id="<?=$year?><?=$semester?>">
@@ -178,6 +189,9 @@
                                         <li class="list-group-item">
                                             <span class="badge">
                                                 <?=$review['timestamp']?>
+                                                <?php if (isset($_SESSION['email']) && $_SESSION['email'] == $review['review_email']): ?>
+                                                    <button class="btn btn-xs btn-primary" type="button" id="delete-<?=$review['id']?>">Delete</button>
+                                                <?php endif; ?>
                                             </span>
                                             <?=$review['description']?>
                                         </li>

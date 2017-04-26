@@ -41,7 +41,7 @@ $(function() {
     });
 
     //
-    // POST requests for adding TAs and reviews
+    // POST requests
     //
 
     $("#add_ta_submit").on("click", function() {
@@ -53,8 +53,14 @@ $(function() {
     });
 
     $("#add_review_submit").on("click", function() {
-        console.log("made it this far");
         $.post(script_url, {"func": "addReview", "description": $("#review_description").val(), "ta_id": url_parts[3], "section_id": $("#section_num").val()}, function() {
+            location.reload();
+        });
+    });
+
+    $("button[id^='delete-'").on("click", function() {
+        var review_id = $(this).attr("id").split("-")[1];
+        $.post(script_url, {"func": "deleteReview", "review_id": review_id}, function() {
             location.reload();
         });
     });

@@ -6,14 +6,14 @@
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         if ($_GET['func'] == 'getCourseSections') {
             getCourseSections($_GET['course_dept'], $_GET['course_mnemonic_number']);
-        } else if ($_GET['func'] == 'addReview') {
-            addReview($_GET['ta_id'], $_GET['section_id'], $_GET['description']);
         }
     } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($_POST['func'] == 'addTA') {
             addTA($_POST['ta_id'], $_POST['name'], $_POST['graduation_year'], $_POST['section_id']);
         } else if ($_POST['func'] == 'addReview') {
             addReview($_POST['ta_id'], $_POST['section_id'], $_POST['description']);
+        } else if ($_POST['func'] == 'deleteReview') {
+            deleteReview($_POST['review_id']);
         }
     }
 
@@ -59,6 +59,15 @@
 
         $stmt = $db->prepare("INSERT INTO review_about (review_id, ta_id, section_id) VALUES (?, ?, ?)");
         $stmt->bind_param("isi", $review_id, $ta_id, $section_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    function deleteReview($review_id) {
+        global $db;
+
+        $stmt = $db->prepare("DELETE FROM review WHERE review_id = ?");
+        $stmt->bind_param("i", $review_id);
         $stmt->execute();
         $stmt->close();
     }
