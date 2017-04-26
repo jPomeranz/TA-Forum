@@ -69,13 +69,12 @@
 
         $stmt = $db->stmt_init();
 
-        $date = date("Y");
         $name = "%" . $name . "%";
         $title = "%" . $title . "%";
         $dept = "%" . $dept . "%";
         $mnemonic = "%" . $mnemonic . "%";
 
-        if($stmt->prepare("SELECT ta_id, name, title, course_dept, course_mnemonic_number, section_number, semester FROM ta NATURAL JOIN teaches NATURAL JOIN section NATURAL JOIN section_of NATURAL JOIN course where year=$date AND name LIKE ? AND title LIKE ? AND course_dept LIKE ? AND course_mnemonic_number LIKE ?") or die(mysqli_error($db))) {
+        if($stmt->prepare("SELECT ta_id, name, title, course_dept, course_mnemonic_number, section_number, semester FROM ta NATURAL JOIN teaches NATURAL JOIN section NATURAL JOIN section_of NATURAL JOIN course WHERE name LIKE ? AND title LIKE ? AND course_dept LIKE ? AND course_mnemonic_number LIKE ?") or die(mysqli_error($db))) {
             $stmt->bind_param("ssss", $name, $title, $dept, $mnemonic);
             $stmt->execute();
             $stmt->bind_result($ta_id, $name, $title, $course_dept, $course_mnemonic_number, $section_number, $semester);
