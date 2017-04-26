@@ -75,15 +75,15 @@
         $dept = "%" . $dept . "%";
         $mnemonic = "%" . $mnemonic . "%";
 
-        if($stmt->prepare("SELECT name, title, section_number, semester FROM ta NATURAL JOIN teaches NATURAL JOIN section NATURAL JOIN section_of NATURAL JOIN course where year=$date AND name LIKE ? AND title LIKE ? AND course_dept LIKE ? AND course_mnemonic_number LIKE ?") or die(mysqli_error($db))) {
+        if($stmt->prepare("SELECT name, title, course_dept, course_mnemonic_number, section_number, semester FROM ta NATURAL JOIN teaches NATURAL JOIN section NATURAL JOIN section_of NATURAL JOIN course where year=$date AND name LIKE ? AND title LIKE ? AND course_dept LIKE ? AND course_mnemonic_number LIKE ?") or die(mysqli_error($db))) {
             $stmt->bind_param("ssss", $name, $title, $dept, $mnemonic);
             $stmt->execute();
-            $stmt->bind_result($name, $title, $section_number, $semester);
+            $stmt->bind_result($name, $title, $course_dept, $course_mnemonic_number, $section_number, $semester);
 
             echo "<h3>Search Results:</h3>";
-            echo "<div class=\"table-responsive\"><table class=\"table\"><th>Name</th><th>Course Title</th><th>Section Number</th><th>Semester</th><br>";
+            echo "<div class=\"table-responsive\"><table class=\"table\"><th>Name</th><th>Course Title</th><th>Course Department</th><th>Course Number</th><th>Section Number</th><th>Semester</th><br>";
             while($stmt->fetch()) {
-                echo "<tr><td>$name</td><td>$title</td><td>$section_number</td><td>$semester</td></tr>";
+                echo "<tr><td>$name</td><td>$title</td><td>$course_dept</td><td>$course_mnemonic_number</td><td>$section_number</td><td>$semester</td></tr>";
             }
             echo "</table></div>";
             $stmt->close();
