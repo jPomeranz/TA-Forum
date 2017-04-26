@@ -168,8 +168,10 @@
                                                          "timestamp" => $timestamp,
                                                          "review_email" => $review_email);
                 }
-
-                echo "<h2>{$ta_id}'s Reviews: ";
+                if (empty($name))
+                    echo "<h2>{$ta_id}'s Reviews: ";
+                else
+                    echo "<h2>{$name}'s Reviews: ";
                 if (isset($_SESSION['email'])) {
                     echo '<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addModal">Add Review</button>';
                 }
