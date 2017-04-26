@@ -8,37 +8,35 @@ $(function() {
     if (url_parts.length >= 3) {
         $.getJSON(script_url, {"func": "getCourseSections", "course_dept": url_parts[1], "course_mnemonic_number": url_parts[2]}, function(data) {
             sections = data;
+
+            //
+            // Dynamically update year/semester/section
+            //
+
+            $("#section_semester").on("change", function() {
+                var el = $("#section_num");
+                el.empty();
+                $.each(sections[$("#section_year").val()][this.value], function(key, value) {
+                    el.append($("<option></option>").attr("value", value).text(key));
+                });
+            });
+
+            $("#section_year").on("change", function() {
+                var el = $("#section_semester");
+                el.empty();
+                $.each(sections[this.value], function(key, value) {
+                    el.append($("<option></option>").attr("value", key).text(key));
+                });
+                el.trigger("change");
+            });
+
+            var el = $("#section_year");
+            $.each(Object.keys(sections).sort().reverse(), function(key, value) {
+                el.append($("<option></option>").attr("value", value).text(value));
+            });
+            el.trigger("change");
         });
     }
-
-    //
-    // Dynamically update year/semester/section
-    //
-
-    $("#section_semester").on("change", function() {
-        var el = $("#section_num");
-        el.empty();
-        $.each(sections[$("#section_year").val()][this.value], function(key, value) {
-            el.append($("<option></option>").attr("value", value).text(key));
-        });
-    });
-
-    $("#section_year").on("change", function() {
-        var el = $("#section_semester");
-        el.empty();
-        $.each(sections[this.value], function(key, value) {
-            el.append($("<option></option>").attr("value", key).text(key));
-        });
-        el.trigger("change");
-    });
-
-    $("#addModal").one("show.bs.modal", function() {
-        var el = $("#section_year");
-        $.each(Object.keys(sections).sort().reverse(), function(key, value) {
-            el.append($("<option></option>").attr("value", value).text(value));
-        });
-        el.trigger("change");
-    });
 
     //
     // POST requests
@@ -52,16 +50,60 @@ $(function() {
         }
     });
 
-    $("#add_review_submit").on("click", function() {
+    $("#add_review_submit").on("click", postAddReview);
+
+    function postAddReview() {
         $.post(script_url, {"func": "addReview", "description": $("#review_description").val(), "ta_id": url_parts[3], "section_id": $("#section_num").val()}, function() {
+            location.reload();
+        });
+    }
+
+    $("a[id^='delete-']").on("click", function() {
+        var review_id = $(this).attr("id").split("-")[1];
+        $.post(script_url, {"func": "deleteReview", "review_id": review_id}, function() {
             location.reload();
         });
     });
 
-    $("button[id^='delete-'").on("click", function() {
+    $("a[id^='edit-']").on("click", function() {
         var review_id = $(this).attr("id").split("-")[1];
-        $.post(script_url, {"func": "deleteReview", "review_id": review_id}, function() {
-            location.reload();
+        var review_div = $("div[id^='review-" + review_id + "']");
+        var review_description = review_div.text().trim();
+        var review_parts = review_div.attr("id").split("-");
+
+        $(".modal-title").text('Edit Review');
+        $("#add_review_submit").text('Save Review');
+        $("#review_description").val(review_description);
+
+        $("#section_year").val(review_parts[2]);
+        $("#section_year").trigger("change");
+
+        $("#section_semester").val(review_parts[3]);
+        $("#section_semester").trigger("change");
+
+        $("#section_num").val(review_parts[4]);
+
+        $("#add_review_submit").off().on("click", function() {
+            var post_data;
+
+            if (url_parts[1].startsWith("profile")) {
+                post_data = {"func": "updateReviewLight", "review_id": review_id, "description": $("#review_description").val()};
+            } else {
+                post_data = {"func": "updateReview", "review_id": review_id, "section_id": $("#section_num").val(), "ta_id": url_parts[3], "description": $("#review_description").val()};
+            }
+
+            $.post(script_url, post_data, function() {
+                location.reload();
+            });
+        });
+
+        $("#addModal").modal("show");
+
+        $("#addModal").one("hide.bs.modal", function() {
+            $(".modal-title").text('Add Review');
+            $("#add_review_submit").text('Add Review');
+            $("#add_review_submit").off().on("click", postAddReview);
+            $("#review_description").val('');
         });
     });
 

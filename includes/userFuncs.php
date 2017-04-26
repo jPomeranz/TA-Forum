@@ -6,10 +6,10 @@
 
         $stmt = $db->stmt_init();
 
-        if($stmt->prepare("SELECT password_hash FROM user WHERE email LIKE ?") or die(mysqli_error($db))) {
+        if($stmt->prepare("SELECT name, password_hash FROM user WHERE email LIKE ?") or die(mysqli_error($db))) {
             $stmt->bind_param("s", $email);
             $stmt->execute();
-            $stmt->bind_result($stored_pass_hash);
+            $stmt->bind_result($name, $stored_pass_hash);
             $stmt->store_result(); //Needed to use num_rows
 
             if($stmt->num_rows != 1) {
@@ -29,6 +29,7 @@
             $stmt->close();
         }
         $db->close();
+        $_SESSION['user_name'] = $name;
         return true;
     }
 

@@ -14,6 +14,10 @@
             addReview($_POST['ta_id'], $_POST['section_id'], $_POST['description']);
         } else if ($_POST['func'] == 'deleteReview') {
             deleteReview($_POST['review_id']);
+        } else if ($_POST['func'] == 'updateReview') {
+            updateReview($_POST['review_id'], $_POST['section_id'], $_POST['ta_id'], $_POST['description']);
+        } else if ($_POST['func'] == 'updateReviewLight') {
+            updateReviewLight($_POST['review_id'], $_POST['description']);
         }
     }
 
@@ -59,6 +63,28 @@
 
         $stmt = $db->prepare("INSERT INTO review_about (review_id, ta_id, section_id) VALUES (?, ?, ?)");
         $stmt->bind_param("isi", $review_id, $ta_id, $section_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    function updateReview($review_id, $section_id, $ta_id, $description) {
+        global $db;
+
+        addTAToSection($ta_id, $section_id);
+
+        updateReviewLight($review_id, $description);
+
+        $stmt = $db->prepare("UPDATE review_about SET section_id = ? WHERE review_id = ?");
+        $stmt->bind_param("ii", $section_id, $review_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    function updateReviewLight($review_id, $description) {
+        global $db;
+
+        $stmt = $db->prepare("UPDATE review SET description = ? WHERE review_id = ?");
+        $stmt->bind_param("si", $description, $review_id);
         $stmt->execute();
         $stmt->close();
     }

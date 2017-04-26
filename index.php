@@ -153,11 +153,11 @@
             function showTAReviews($course_dept, $course_mnemonic_number, $ta_id) {
                 global $db;
 
-                $stmt = $db->prepare("SELECT ta.name, review.review_id, review.description, review.timestamp, review.email, section.semester, section.year FROM review INNER JOIN review_about ON review.review_id = review_about.review_id INNER JOIN ta ON review_about.ta_id = ta.ta_id INNER JOIN section ON review_about.section_id = section.section_id INNER JOIN section_of ON section.section_id = section_of.section_id INNER JOIN course ON section_of.course_id = course.course_id WHERE course.course_dept = ? AND course.course_mnemonic_number = ? AND ta.ta_id = ? ORDER BY section.year ASC, section.semester ASC");
+                $stmt = $db->prepare("SELECT ta.name, review.review_id, review.description, review.timestamp, review.email, section.section_id, section.semester, section.year FROM review INNER JOIN review_about ON review.review_id = review_about.review_id INNER JOIN ta ON review_about.ta_id = ta.ta_id INNER JOIN section ON review_about.section_id = section.section_id INNER JOIN section_of ON section.section_id = section_of.section_id INNER JOIN course ON section_of.course_id = course.course_id WHERE course.course_dept = ? AND course.course_mnemonic_number = ? AND ta.ta_id = ? ORDER BY section.year ASC, section.semester ASC");
                 $stmt->bind_param("sis", $course_dept, $course_mnemonic_number, $ta_id);
                 $stmt->execute();
                 $stmt->store_result();
-                $stmt->bind_result($name, $review_id, $description, $timestamp, $review_email, $semester, $year);
+                $stmt->bind_result($name, $review_id, $description, $timestamp, $review_email, $section_id, $semester, $year);
 
                 $num_rows = $stmt->num_rows;
 
@@ -166,8 +166,12 @@
                     $reviews[$year][$semester][] = array("id" => $review_id,
                                                          "description" => $description,
                                                          "timestamp" => $timestamp,
-                                                         "review_email" => $review_email);
+                                                         "review_email" => $review_email,
+                                                         "section_id" => $section_id);
                 }
+
+                $stmt->close();
+
                 if (empty($name))
                     echo "<h2>{$ta_id}'s Reviews: ";
                 else
@@ -182,20 +186,30 @@
                         foreach (array_keys($semesters) as $semester) {
                             ?>
                             <div class="panel panel-default">
-                                <div class="panel-heading" data-toggle="collapse" data-target="#<?=$year?><?=$semester?>" style="cursor: pointer;">
+                                <div class="panel-heading" data-toggle="collapse" data-target="#<?=$year?>-<?=$semester?>" style="cursor: pointer;">
                                     <h3 class="panel-title"><?=$year?> <?=$semester?></h3>
                                 </div>
-                                <div class="panel-collapse collapse" id="<?=$year?><?=$semester?>">
+                                <div class="panel-collapse collapse" id="<?=$year?>-<?=$semester?>">
                                     <ul class="list-group">
                                     <?php foreach ($semesters[$semester] as $review): ?>
                                         <li class="list-group-item">
                                             <span class="badge">
                                                 <?=$review['timestamp']?>
                                                 <?php if (isset($_SESSION['email']) && $_SESSION['email'] == $review['review_email']): ?>
-                                                    <button class="btn btn-xs btn-primary" type="button" id="delete-<?=$review['id']?>">Delete</button>
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
+                                                            Edit <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu" style="min-width: 80px; background-color: #b15315;">
+                                                            <li><a href="javascript:void(0)" id="edit-<?=$review['id']?>">Edit</a></li>
+                                                            <li><a href="javascript:void(0)" id="delete-<?=$review['id']?>">Delete</a></li>
+                                                        </ul>
+                                                    </div>
                                                 <?php endif; ?>
                                             </span>
-                                            <?=$review['description']?>
+                                            <div id="review-<?=$review['id']?>-<?=$year?>-<?=$semester?>-<?=$review['section_id']?>">
+                                                <?=$review['description']?>
+                                            </div>
                                         </li>
                                     <?php endforeach; ?>
                                     </ul>
@@ -280,7 +294,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button id="modal_close" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <?php if (isset($course_mnemonic_number) && !isset($ta_id)): ?>
                         <button id="add_ta_submit" type="button" class="btn btn-primary">Add TA</button>
                     <?php elseif (isset($ta_id)): ?>

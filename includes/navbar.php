@@ -17,9 +17,13 @@
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
             <?php
+            	$class = "";
+            	if ($currentPage == 'profile')
+            		$class = 'active';
+
                 if(!isset($_SESSION["email"])) //Show login button if user not logged in
 				    echo "<li><a href=\"#\" data-toggle=\"modal\" data-target=\"#myModal\">Login</a></li>";
-                else echo "<li><a href=\"#\">" . $_SESSION["email"] . "</a></li><li><a href=\"{$_SERVER['CONTEXT_PREFIX']}/logout.php\">Logout</a></li>"; //Else print email of user and logout button
+                else echo "<li class=\"$class\"><a href=\"{$_SERVER['CONTEXT_PREFIX']}/profile.php\">" . $_SESSION["email"] . "</a></li><li><a href=\"{$_SERVER['CONTEXT_PREFIX']}/logout.php\">Logout</a></li>"; //Else print email of user and logout button
             ?>
 		</ul>
 	</div><!--/.nav-collapse -->
