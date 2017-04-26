@@ -64,6 +64,7 @@
         $stmt = $db->stmt_init();
 
         if($stmt->prepare("INSERT INTO feedback (description) VALUES(?)") or die(mysqli_error($db))) {
+            $description = htmlentities($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
             $stmt->bind_param("s", $description);
             $stmt->execute();
             $stmt->close();
