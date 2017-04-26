@@ -14,7 +14,7 @@
         <?php
             require "includes/dbutil.php";
             require "includes/userFuncs.php";
-            
+
             if(isset($_POST["feedbackSubmitted"])) {
                 $description = $_POST["description"];
                 if(addFeedback($description)) {
@@ -45,12 +45,17 @@
             $stmt = $db->stmt_init();
 
             echo "<h2>Feedback:</h2>";
-            echo "<div class=\"table-responsive\"><table class=\"table table-striped\">";
+
             $result = mysqli_query($db, "SELECT description FROM feedback");
-            while($row = mysqli_fetch_array($result)) {
-                echo "<tr><td>" . $row['description'] . "</td></tr>";
+            if ($result->num_rows > 0) {
+                echo "<div class=\"table-responsive\"><table class=\"table table-striped\">";
+                while($row = mysqli_fetch_array($result)) {
+                    echo "<tr><td>" . $row['description'] . "</td></tr>";
+                }
+                echo "</table></div>";
+            } else {
+                echo "<div class=\"well well-sm\">No site feedback. Please add some!</div>";
             }
-            echo "</table></div>";
 
             $db->close();
         ?>
