@@ -45,10 +45,12 @@
             $stmt = $db->stmt_init();
 
             echo "<h2>Feedback:</h2>";
+            echo "<div class=\"table-responsive\"><table class=\"table table-striped\">";
             $result = mysqli_query($db, "SELECT description FROM feedback");
             while($row = mysqli_fetch_array($result)) {
-                echo "<p>- " . $row['description'] . "</p>";
+                echo "<tr><td>" . $row['description'] . "</td></tr>";
             }
+            echo "</table></div>";
 
             $db->close();
         ?>
