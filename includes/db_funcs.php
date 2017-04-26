@@ -41,8 +41,9 @@
     function addTA($ta_id, $name, $graduation_year, $section_id) {
         global $db;
 
+        $name = htmlentities($name, ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $stmt = $db->prepare("INSERT INTO ta (ta_id, name, graduation_year) VALUES (?, ?, ?)");
-        $stmt->bind_param("ssi", $ta_id, htmlentities($name, ENT_QUOTES | ENT_HTML5, 'UTF-8'), $graduation_year);
+        $stmt->bind_param("ssi", $ta_id, $name, $graduation_year);
         $stmt->execute();
         $stmt->close();
 
@@ -54,8 +55,9 @@
 
         addTAToSection($ta_id, $section_id);
 
+        $description = htmlentities($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $stmt = $db->prepare("INSERT INTO review (description, email) VALUES (?, ?)");
-        $stmt->bind_param("ss", htmlentities($description, ENT_QUOTES | ENT_HTML5, 'UTF-8'), $_SESSION["email"]);
+        $stmt->bind_param("ss", $description, $_SESSION["email"]);
         $stmt->execute();
         $stmt->close();
 
@@ -72,7 +74,8 @@
 
         addTAToSection($ta_id, $section_id);
 
-        updateReviewLight($review_id, htmlentities($description, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        $description = htmlentities($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        updateReviewLight($review_id, $description);
 
         $stmt = $db->prepare("UPDATE review_about SET section_id = ? WHERE review_id = ?");
         $stmt->bind_param("ii", $section_id, $review_id);
@@ -83,8 +86,9 @@
     function updateReviewLight($review_id, $description) {
         global $db;
 
+        $description = htmlentities($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $stmt = $db->prepare("UPDATE review SET description = ? WHERE review_id = ?");
-        $stmt->bind_param("si", htmlentities($description, ENT_QUOTES | ENT_HTML5, 'UTF-8'), $review_id);
+        $stmt->bind_param("si", $description, $review_id);
         $stmt->execute();
         $stmt->close();
     }
