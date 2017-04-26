@@ -68,7 +68,7 @@ $(function() {
     $("a[id^='edit-']").on("click", function() {
         var review_id = $(this).attr("id").split("-")[1];
         var review_div = $("div[id^='review-" + review_id + "']");
-        var review_description = review_div.text().trim();
+        var review_description = review_div.html().trim();
         var review_parts = review_div.attr("id").split("-");
 
         $(".modal-title").text('Edit Review');

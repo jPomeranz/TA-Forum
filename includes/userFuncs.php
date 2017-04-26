@@ -74,6 +74,7 @@
         $password = $_POST["password"];
         if(registerUser($email, $name, $password)) {
             $_SESSION["email"] = $email;
+            $_SESSION["user_name"] = $name;
             header("Refresh:0");
             echo "User " . $email . " has successfully registered and logged in.";
         }
@@ -125,7 +126,7 @@
                                 </form>
                             </div>
                             <div class="tab-pane" id="Registration">
-                                <form role="form" class="form-horizontal" id="register" action="index.php" method="post" accept-charset="UTF-8">
+                                <form role="form" class="form-horizontal" id="register" action="<?php echo $_SERVER['CONTEXT_PREFIX'] ?>/index.php" method="post" accept-charset="UTF-8">
                                 <div class="form-group">
                                     <label for="name" class="col-sm-2 control-label">Name</label>
                                     <div class="col-sm-10">
