@@ -1,11 +1,11 @@
 <?php
 class DbUtil{
-	public static $loginUser = "***REMOVED***";
-	public static $loginPass = "***REMOVED***$";
-	public static $loginUser_insecure = "***REMOVED***";
-	public static $loginPass_insecure = "***REMOVED***";
-	public static $host = "***REMOVED***"; // DB Host
-	public static $schema = "***REMOVED***"; // DB Schema
+	public static $loginUser = "xxx";
+	public static $loginPass = "xxx";
+	public static $loginUser_insecure = "xxx";
+	public static $loginPass_insecure = "xxx";
+	public static $host = "xxx"; // DB Host
+	public static $schema = "xxx"; // DB Schema
 
 	public static function loginConnection($secure = true){
 		$db = null;
